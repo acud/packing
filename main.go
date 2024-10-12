@@ -156,19 +156,22 @@ const deg = 3
 func (t *treeNode) hash() []byte {
 	if len(t.child) > 0 {
 		// there're child nodes to call
-		hashes := []byte{}
+		hashes := sha256.New()
+
 		for _, child := range t.child {
-			hashes = append(hashes, child.hash()...)
+			_, err := hashes.Write(child.hash())
+			if err != nil {
+				panic(err)
+			}
 		}
 
-		fmt.Println("adding zero hash", deg, len(t.child))
 		for i := deg - len(t.child); i > 0; i-- {
 			// append the subtree hash of 3 nodes of all zero leaves
 			// when they don't exist so we don't need to allocate the
 			// subtree
-			hashes = append(hashes, allZeros...)
+			hashes.Write(allZeros)
 		}
-		return hashData(hashes)
+		return hashes.Sum(nil)
 	}
 
 	v := []byte{}
