@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"encoding/hex"
+	"fmt"
 	"testing"
 
 	"github.com/davecgh/go-spew/spew"
@@ -66,25 +68,21 @@ func TestFixture(t *testing.T) {
 	v.d = d
 	v.e = e
 	v.f = f
-	// copy(v.A[:], a)
-	// copy(v.b[:], b)
-	// copy(v.c[:], c)
-	// copy(v.d[:], d)
-	// copy(v.e[:], e)
-	// copy(v.f[:], f)
 
 	n := v.pack()
 	spew.Dump(n)
-	// result := n.hash()
-	//expRes, err := hex.DecodeString("4278118c38f02679efc01a9075510abe00747b01705c9add495053d88604ce95")
-	//if err != nil {
-	//panic(err)
-	//}
-	//if bytes.Compare(result, expRes) != 0 {
-	//t.Log(hex.EncodeToString(result))
-	//panic("failed")
-	//}
-	//fmt.Println(v)
-	//fmt.Println("node")
-	//fmt.Println(n.a)
+	fmt.Println("gonna hash now")
+	result := n.hash()
+
+	expRes, err := hex.DecodeString("4278118c38f02679efc01a9075510abe00747b01705c9add495053d88604ce95")
+	if err != nil {
+		panic(err)
+	}
+	if bytes.Compare(result, expRes) != 0 {
+		t.Log(hex.EncodeToString(result))
+		panic("failed")
+	}
+	fmt.Println(v)
+	fmt.Println("node")
+	// fmt.Println(n.a)
 }
