@@ -86,7 +86,6 @@ func (t *treeNode) hash() []byte {
 }
 
 func (t *treeNode) insert(chunk []byte) (bool, *treeNode) {
-	// fmt.Println("insert")
 	if len(t.child) != 0 {
 		// case 1 - we can still fit on the existing subtree
 		for _, child := range t.child {
@@ -154,7 +153,6 @@ func packFields(fields [][]byte) *treeNode {
 		ctr := 0
 	COPY:
 		ctr += copy(node[ctr:], fields[i])
-		fmt.Println("copy", node, ctr, i)
 		if i == len(fields)-1 {
 			// last field. insert the node and return the new root
 			ok, root := tree.insert(node)

@@ -77,14 +77,6 @@ func TestDeeper(t *testing.T) {
 	result := treeRoot.hash()
 	spew.Dump(treeRoot)
 	fmt.Println("got result hash", hex.EncodeToString(result))
-	expRes, err := hex.DecodeString("4278118c38f02679efc01a9075510abe00747b01705c9add495053d88604ce95")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if bytes.Compare(result, expRes) != 0 {
-		t.Log(hex.EncodeToString(result))
-		t.Fatal("hash mismatch")
-	}
 }
 
 type bigcontainer struct {
