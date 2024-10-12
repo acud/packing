@@ -155,17 +155,17 @@ const deg = 3
 
 func (t *treeNode) hash() []byte {
 	if len(t.child) > 0 {
-		// there's child nodes to call
+		// there're child nodes to call
 		hashes := []byte{}
-		for i, child := range t.child {
-			fmt.Println("calling hash on child", i)
-			hash := child.hash()
-			fmt.Println("child hash", i, hex.EncodeToString(hash))
-			hashes = append(hashes, hash...)
+		for _, child := range t.child {
+			hashes = append(hashes, child.hash()...)
 		}
 
 		fmt.Println("adding zero hash", deg, len(t.child))
 		for i := deg - len(t.child); i > 0; i-- {
+			// append the subtree hash of 3 nodes of all zero leaves
+			// when they don't exist so we don't need to allocate the
+			// subtree
 			hashes = append(hashes, allZeros...)
 		}
 		return hashData(hashes)
@@ -178,6 +178,8 @@ func (t *treeNode) hash() []byte {
 		addPad(v, BYTES_PER_CHUNK-len(item))
 	}
 	for i := deg - len(t.leaf); i > 0; i-- {
+		// append the zero hash of sha256(32 zeros) so we don't
+		// need to allocate it whenever there's no leaf node
 		v = append(v, zero[:]...)
 	}
 
