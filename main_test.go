@@ -5,8 +5,6 @@ import (
 	"encoding/hex"
 	"fmt"
 	"testing"
-
-	"github.com/davecgh/go-spew/spew"
 )
 
 /*
@@ -63,26 +61,21 @@ func TestFixture(t *testing.T) {
 
 	v := container{}
 	v.A = a
-	v.b = b
-	v.c = c
-	v.d = d
-	v.e = e
-	v.f = f
+	v.BRandonName = b
+	v.C = c
+	v.D = d
+	v.E = e
+	v.F = f
 
-	n := v.pack()
-	spew.Dump(n)
-	fmt.Println("gonna hash now")
-	result := n.hash()
-
+	treeRoot := v.pack()
+	result := treeRoot.hash()
+	fmt.Println("got result hash", hex.EncodeToString(result))
 	expRes, err := hex.DecodeString("4278118c38f02679efc01a9075510abe00747b01705c9add495053d88604ce95")
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 	if bytes.Compare(result, expRes) != 0 {
 		t.Log(hex.EncodeToString(result))
-		panic("failed")
+		t.Fatal("hash mismatch")
 	}
-	fmt.Println(v)
-	fmt.Println("node")
-	// fmt.Println(n.a)
 }
